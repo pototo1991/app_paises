@@ -1,18 +1,23 @@
 import os
+import dj_database_url
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "your-secret-key"
+# SECRET_KEY y DEBUG controlados por variables de entorno para mayor seguridad en producción
+SECRET_KEY = os.getenv(
+    "SECRET_KEY", "your-secret-key"
+)  # Reemplaza "your-secret-key" con una real para desarrollo
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Hosts permitidos
+ALLOWED_HOSTS = [
+    os.getenv(
+        "ALLOWED_HOST", "app_paises.onrender.com"
+    )  # Cambia * por el dominio de tu app en producción cuando esté desplegada
+]
 
-ALLOWED_HOSTS = ["*"]
-
-# Application definition
+# Aplicaciones instaladas
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -21,10 +26,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "myapp",
+    "whitenoise.runserver_nostatic",  # Agrega whitenoise aquí
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # Middleware de whitenoise para archivos estáticos
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -53,15 +60,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "app_paises.wsgi.application"
 
-# Database
+# Configuración de la base de datos usando dj_database_url
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    "default": dj_database_url.config(
+        default=os.getenv("DATABASE_URL", f"sqlite:///{BASE_DIR / 'db.sqlite3'}")
+    )
 }
 
-# Password validation
+# Validación de contraseñas
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -77,20 +83,22 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Internationalization
+# Internacionalización
 LANGUAGE_CODE = "es-es"
-
 TIME_ZONE = "America/Santiago"
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
+# Archivos estáticos
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "myapp/static"]
+STATIC_ROOT = (
+    BASE_DIR / "staticfiles"
+)  # Directorio donde Render almacenará los archivos estáticos
 
-# Default primary key field type
+# Configuración adicional para servir archivos estáticos en producción con Whitenoise
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# Configuración de ID de campo primario
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
