@@ -13,7 +13,7 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 # Hosts permitidos
 ALLOWED_HOSTS = [
     os.getenv(
-        "ALLOWED_HOST", "app_paises.onrender.com"
+        "ALLOWED_HOSTS", "app_paises.onrender.com"
     )  # Cambia * por el dominio de tu app en producción cuando esté desplegada
 ]
 
