@@ -1,0 +1,11 @@
+ingresar a la carpeta del proyecto, puede ser en visual o terminal, y escribir
+source env/bin/activate
+
+al promp se le antepone (env) o algo similar
+cuando el promp haya cambiado indica que esta en el ambiente del proyecto
+
+y ahora se debe escribir el comando 
+python manage.py runserver  y la terminal indicara una url de conexion
+
+para desactivar (env) se usa el comando 
+deactivate

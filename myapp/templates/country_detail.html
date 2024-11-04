@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del País</title>
+    <!-- Enlace al favicon -->
+    {% load static %}
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <!-- Bootstrap CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <style>
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: white;
+        }
+        body {
+            background-color: #f0f0f0;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 1200px;
+            margin: auto;
+        }
+        .flag {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            background-color: #e0e0e0; /* Fondo gris claro */
+            padding: 10px; /* Espacio alrededor de la imagen */
+            border-radius: 5px; /* Bordes redondeados */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'principal' %}">Home</a>
+            <form class="d-flex" method="GET" action=".">
+                <input class="form-control me-2" type="search" placeholder="Buscar país" aria-label="Buscar" name="query" value="{{ query }}">
+                <select class="form-select me-2" name="region">
+                    <option value="" {% if not region %}selected{% endif %}>Todas las Regiones</option>
+                    <option value="Africa" {% if region == "Africa" %}selected{% endif %}>África</option>
+                    <option value="Americas" {% if region == "Americas" %}selected{% endif %}>Américas</option>
+                    <option value="Asia" {% if region == "Asia" %}selected{% endif %}>Asia</option>
+                    <option value="Europe" {% if region == "Europe" %}selected{% endif %}>Europa</option>
+                    <option value="Oceania" {% if region == "Oceania" %}selected{% endif %}>Oceanía</option>
+                </select>
+                <button class="btn btn-outline-success" type="submit">Buscar</button>
+            </form>
+            <a class="btn btn-outline-primary ms-3" href="{% url 'game' %}">Jugar</a>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="container mt-5">
+        <h1>{{ country.nombre }}</h1>
+        <img src="{{ country.bandera }}" alt="Bandera de {{ country.nombre }}" class="flag mb-3">
+        <img src="{{ country.escudo }}" alt="Escudo de {{ country.nombre }}" class="flag mb-3">
+        <p><strong>Nombre Oficial:</strong> {{ country.nombre_oficial}}</p>
+        <p><strong>Capital:</strong> {{ country.capital }}</p>
+        <p><strong>Región:</strong> {{ country.region }}</p>
+        <p><strong>Subregión:</strong> {{ country.subregion }}</p>
+        <p><strong>Población:</strong> {{ country.poblacion }} habitantes</p>
+        <p><strong>Área:</strong> {{ country.area }}</p>
+        <p><strong>Fronteras:</strong> {{ country.fronteras }}</p>
+        <p><strong>Idiomas:</strong> {% for lang in country.idiomas %}{{ lang }} {% endfor %}</p>
+        <p><strong>Moneda:</strong> {% for currency in country.monedas %}{{ currency }} {% endfor %}</p>
+        <p><strong>Dominio Web:</strong> {{ country.tld }}</p>
+        <p><strong>Ubicación:</strong> <a href="{{ country.maps }}" target="_blank">Ver en el mapa</a></p>
+        <p><strong>Zona Horaria:</strong> {{ country.zona_horaria }}</p>
+        <p><strong>Gentilicio:</strong> {{ country.demonyms }}</p>
+        <p><strong>Latitud, Loguitud:</strong> {{ country.capital_info }}</p>
+    </div>
+</body>
+</html>

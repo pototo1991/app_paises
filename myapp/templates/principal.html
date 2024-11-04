@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Principal</title>
+    <!-- Enlace al favicon -->
+    {% load static %}
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <!-- Bootstrap CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <style>
+        .country-card {
+            height: 100%;
+            background-color: #e0e0e0; /* Fondo gris */
+        }
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: white;
+        }
+        body {
+            background-color: #f0f0f0;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 1200px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'principal' %}">Home</a>
+            <form class="d-flex" method="GET" action=".">
+                <input class="form-control me-2" type="search" placeholder="Buscar país" aria-label="Buscar" name="query" value="{{ query }}">
+                <select class="form-select me-2" name="region">
+                    <option value="" {% if not region %}selected{% endif %}>Todas las Regiones</option>
+                    <option value="Africa" {% if region == "Africa" %}selected{% endif %}>África</option>
+                    <option value="Americas" {% if region == "Americas" %}selected{% endif %}>Américas</option>
+                    <option value="Asia" {% if region == "Asia" %}selected{% endif %}>Asia</option>
+                    <option value="Europe" {% if region == "Europe" %}selected{% endif %}>Europa</option>
+                    <option value="Oceania" {% if region == "Oceania" %}selected{% endif %}>Oceanía</option>
+                </select>
+                <button class="btn btn-outline-success" type="submit">Buscar</button>
+            </form>
+            <a class="btn btn-outline-primary ms-3" href="{% url 'game' %}">Jugar</a>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="container mt-5">
+        <h1>Países del Mundo</h1>
+        <p>Total de países: {{ total_countries }}</p>
+        <div class="row">
+            {% for country in countries %}
+            <div class="col-md-4 d-flex align-items-stretch">
+                <div class="card mb-4 country-card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{% url 'country_detail' country.nombre %}">{{ country.nombre }}</a>
+                        </h5>
+                        <img src="{{ country.bandera }}" alt="Bandera de {{ country.nombre }}" class="img-fluid mb-3">
+                        <p class="card-text">
+                            <strong>Capital:</strong> {{ country.capital }}<br>
+                            <strong>Región:</strong> {{ country.region }}<br>
+                            <strong>Subregión:</strong> {{ country.subregion }}<br>
+                            <strong>Población:</strong> {{ country.poblacion }}<br>
+                            <strong>Área:</strong> {{ country.area }}<br>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
