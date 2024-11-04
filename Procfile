@@ -1,1 +1,2 @@
-web: gunicorn app_paises.wsgi --log-file -
+web: gunicorn app_paises.wsgi:application
+
