@@ -12,7 +12,7 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 
 # Hosts permitidos
 # Hosts permitidos
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "app_paises.onrender.com").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "app_paises,onrender.com").split(",")
 
 
 # Aplicaciones instaladas

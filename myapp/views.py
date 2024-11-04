@@ -13,7 +13,10 @@ def translate(text):
 
 
 def index(request):
-    return render(request, "index.html")
+    try:
+        return render(request, "index.html")
+    except Exception as e:
+        return HttpResponse(f"Error: {e}")
 
 
 def principal(request):
