@@ -1,2 +1,2 @@
-web: gunicorn app_paises.wsgi:application
+web: gunicorn app-paises.wsgi:application
 

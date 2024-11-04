@@ -11,7 +11,7 @@ SECRET_KEY = os.getenv(
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
 # Hosts permitidos
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "app_paises,onrender.com").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "app-paises,onrender.com").split(",")
 
 
 # Aplicaciones instaladas
@@ -37,7 +37,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "app_paises.urls"
+ROOT_URLCONF = "app-paises.urls"
 
 TEMPLATES = [
     {
@@ -55,7 +55,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "app_paises.wsgi.application"
+WSGI_APPLICATION = "app-paises.wsgi.application"
 
 # Configuración de la base de datos usando dj_database_url
 DATABASES = {
