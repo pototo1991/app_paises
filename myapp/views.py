@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from .translations import TRANSLATIONS
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from django.http import HttpResponse
 
 
 # Función para traducir automáticamente textos según el archivo translations.py
@@ -16,7 +17,7 @@ def index(request):
     try:
         return render(request, "index.html")
     except Exception as e:
-        return HttpResponse(f"Error: {e}")
+        return HttpResponse(f"Error: {str(e)}")
 
 
 def principal(request):
