@@ -59,7 +59,7 @@
         <!-- Fila para el contenido principal -->
         <div class="row mt-4">
             <!-- Columna izquierda: bandera y campo de entrada -->
-            <div class="col-md-4 text-center">
+            <div class="col-md-5 text-center">
                 <img src="{{ country.bandera }}" alt="Bandera de un país" class="flag mb-3">
                 <form method="post">
                     {% csrf_token %}
@@ -73,7 +73,7 @@
             </div>
 
             <!-- Columna derecha: conteo del juego -->
-            <div class="col-md-4 text-center offset-md-4">
+            <div class="col-md-5 text-center">
                 <div>
                     <p><strong>Correctas:</strong> {{ correct_count }}</p>
                     <p><strong>Incorrectas:</strong> {{ incorrect_count }}</p>
@@ -105,7 +105,7 @@
             }).then(() => {
                 setTimeout(function() {
                     window.location.href = "{% url 'principal' %}";
-                }, 3000);
+                }, 5000);
             });
         }
     </script>
