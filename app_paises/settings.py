@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv(
     "SECRET_KEY", "your-secret-key"
 )  # Reemplaza "your-secret-key" con una real para desarrollo
-DEBUG = os.getenv("DEBUG", "False") == "True"
+DEBUG = os.getenv("DEBUG", "False") == "False"
 
 # Hosts permitidos
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "app_paises.onrender.com").split(",")
