@@ -11,7 +11,7 @@ SECRET_KEY = os.getenv(
 DEBUG = os.getenv("DEBUG", "False") == "False"
 
 # Hosts permitidos
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "app_paises.onrender.com").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "app-paises.onrender.com").split(",")
 
 
 # Aplicaciones instaladas
