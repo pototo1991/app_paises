@@ -48,7 +48,16 @@
     </nav>
 
     <div class="container-fluid mt-5">
+        <!-- Fila para el título y subtítulo -->
         <div class="row">
+            <div class="col-12 text-center">
+                <h1>Juego de Banderas</h1>
+                <p>¿Puedes adivinar el país por su bandera?</p>
+            </div>
+        </div>
+
+        <!-- Fila para el contenido principal -->
+        <div class="row mt-4">
             <!-- Columna izquierda: bandera y campo de entrada -->
             <div class="col-md-4 text-center">
                 <img src="{{ country.bandera }}" alt="Bandera de un país" class="flag mb-3">
@@ -63,14 +72,8 @@
                 <button onclick="endGame()" class="btn btn-danger mt-3">Finalizar Juego</button>
             </div>
 
-            <!-- Columna central: título y subtítulo -->
-            <div class="col-md-4 text-center align-self-center">
-                <h1>Juego de Banderas</h1>
-                <p>¿Puedes adivinar el país por su bandera?</p>
-            </div>
-
             <!-- Columna derecha: conteo del juego -->
-            <div class="col-md-4 text-center align-self-center">
+            <div class="col-md-4 text-center offset-md-4">
                 <div>
                     <p><strong>Correctas:</strong> {{ correct_count }}</p>
                     <p><strong>Incorrectas:</strong> {{ incorrect_count }}</p>
