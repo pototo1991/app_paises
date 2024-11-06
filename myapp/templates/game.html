@@ -5,25 +5,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Juego de Banderas</title>
+    <!-- Enlace al favicon -->
+    {% load static %}
     <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <!-- Bootstrap CSS -->
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <style>
         .flag {
             width: 100%;
-            max-width: 200px;
+            max-width: 300px;
             height: auto;
+            display: block;
+            margin: 0 auto;
             border: 2px solid #ccc;
-            margin-bottom: 15px;
         }
-        .container-fluid {
+        .container {
+            background-color: #e0e0e0;
             padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: auto;
+            text-align: center;
+        }
+        body {
+            background-color: #f0f0f0;
         }
         .result-message {
             font-size: 1.2em;
             font-weight: bold;
             margin-top: 15px;
         }
-        /* Pop-up estilo */
+        /* Estilos para el pop-up */
         .popup {
             display: none;
             position: fixed;
@@ -47,43 +59,41 @@
         </div>
     </nav>
 
-    <div class="container-fluid mt-5">
-        <!-- Fila para el título y subtítulo -->
-        <div class="row">
-            <div class="col-12 text-center">
-                <h1>Juego de Banderas</h1>
-                <p>¿Puedes adivinar el país por su bandera?</p>
-            </div>
-        </div>
+    <div class="container mt-5">
+        <h1>Juego de Banderas</h1>
+        <p>¿Puedes adivinar el país por su bandera?</p>
+        <img src="{{ country.bandera }}" alt="Bandera de un país" class="flag mb-3">
+        
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="correct_answer" value="{{ correct_answer }}">
+            <input type="hidden" name="country_bandera" value="{{ country.bandera }}">
+            <input type="text" name="answer" placeholder="Escribe el nombre del país" class="form-control mb-3">
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
 
-        <!-- Fila para el contenido principal -->
-        <div class="row mt-4">
-            <!-- Columna izquierda: bandera y campo de entrada -->
-            <div class="col-md-4 text-center">
-                <img src="{{ country.bandera }}" alt="Bandera de un país" class="flag mb-3">
-                <form method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="correct_answer" value="{{ correct_answer }}">
-                    <input type="hidden" name="country_bandera" value="{{ country.bandera }}">
-                    <input type="text" name="answer" placeholder="Escribe el nombre del país" class="form-control mb-3">
-                    <button type="submit" class="btn btn-primary me-2">Enviar</button>
-                    <button type="submit" formaction="{% url 'game' %}?change_flag=1" class="btn btn-secondary">Cambiar Bandera</button>
-                </form>
-                <button onclick="endGame()" class="btn btn-danger mt-3">Finalizar Juego</button>
-            </div>
+        <form method="get" action="{% url 'game' %}">
+            <input type="hidden" name="change_flag" value="1">
+            <button type="submit" class="btn btn-secondary mt-3">Cambiar Bandera</button>
+        </form>
 
-            <!-- Columna derecha: conteo del juego -->
-            <div class="col-md-4 text-center offset-md-4">
-                <div>
-                    <p><strong>Correctas:</strong> {{ correct_count }}</p>
-                    <p><strong>Incorrectas:</strong> {{ incorrect_count }}</p>
-                    <p><strong>Cambios de Bandera:</strong> {{ change_flag_count }}</p>
-                    <p><strong>Total Intentos:</strong> {{ correct_count|add:incorrect_count|add:change_flag_count }}</p>
-                    {% if result %}
-                        <p class="result-message">{{ result }}</p>
-                    {% endif %}
-                </div>
-            </div>
+        <!-- Botón para finalizar el juego -->
+        <button onclick="endGame()" class="btn btn-danger mt-3">Finalizar Juego</button>
+
+        {% if result %}
+            <p class="result-message">{{ result }}</p>
+            <script>
+                setTimeout(function() {
+                    window.location.href = "{% url 'game' %}";
+                }, 3000);
+            </script>
+        {% endif %}
+
+        <div class="mt-4">
+            <p><strong>Correctas:</strong> {{ correct_count }}</p>
+            <p><strong>Incorrectas:</strong> {{ incorrect_count }}</p>
+            <p><strong>Cambios de Bandera:</strong> {{ change_flag_count }}</p>
+            <p><strong>Total Intentos:</strong> {{ correct_count|add:incorrect_count|add:change_flag_count }}</p>
         </div>
     </div>
 
@@ -94,18 +104,21 @@
         <p><strong>Incorrectas:</strong> {{ incorrect_count }}</p>
         <p><strong>Cambios de Bandera:</strong> {{ change_flag_count }}</p>
         <p><strong>Total:</strong> {{ correct_count|add:incorrect_count|add:change_flag_count }}</p>
+        <!-- <p>Redirigiendo en 5 segundos...</p> -->
     </div>
 
     <script>
         function endGame() {
+            // Mostrar el pop-up
             document.getElementById('popup').style.display = 'block';
-            fetch("{% url 'reset_counters' %}", {
-                method: "POST",
-                headers: { 'X-CSRFToken': '{{ csrf_token }}' }
-            }).then(() => {
+
+            // Limpiar los contadores
+            fetch("{% url 'reset_counters' %}", { method: "POST", headers: { 'X-CSRFToken': '{{ csrf_token }}' } })
+            .then(() => {
+                // Redirigir a principal.html después de 5 segundos
                 setTimeout(function() {
                     window.location.href = "{% url 'principal' %}";
-                }, 5000);
+                }, 3000);
             });
         }
     </script>
