@@ -45,5 +45,10 @@ TRANSLATIONS = {
     "Argentine peso": "Peso Argentino",
     "Afghan afghani": "Afganí afgano",
     "Japanese yen": "Yen Japones",
+    "Chilean peso": "Peso Chileno",
+    # Fronteras
+    "ARG": "Argentina",
+    "BOL": "Bolivia",
+    "PER": "Perú",
     # Añadir más traducciones según sea necesario
 }
