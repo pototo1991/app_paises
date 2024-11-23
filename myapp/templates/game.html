@@ -75,34 +75,32 @@
     <div class="container mt-5">
         <h1>Juego de Banderas</h1>
         <p>¿Puedes adivinar el país por su bandera?</p>
-    {% if not country %}
-        <p class="text-danger">No se encontraron países con los filtros aplicados.</p>
-    {% else %}
         <img src="{{ country.bandera }}" alt="Bandera de un país" class="flag mb-3">
+        
         <form method="post">
             {% csrf_token %}
             <input type="hidden" name="correct_answer" value="{{ correct_answer }}">
             <input type="hidden" name="country_bandera" value="{{ country.bandera }}">
             <input type="text" name="answer" placeholder="Escribe el nombre del país" class="form-control mb-3">
             <button type="submit" class="btn btn-primary">Enviar</button>
-            <button type="submit" class="btn btn-secondary mt-3" name="change_flag" value="1">Cambiar Bandera</button>
         </form>
-    {% endif %}
+
+        <form method="get" action="{% url 'game' %}">
+            <input type="hidden" name="change_flag" value="1">
+            <button type="submit" class="btn btn-secondary mt-3">Cambiar Bandera</button>
+        </form>
 
         <!-- Botón para finalizar el juego -->
         <button onclick="endGame()" class="btn btn-danger mt-3">Finalizar Juego</button>
 
         {% if result %}
-            <p class="result-message {% if "¡Correcto!" in result %}text-success{% else %}text-danger{% endif %}">
-                {{ result }}
-            </p>
+            <p class="result-message">{{ result }}</p>
             <script>
                 setTimeout(function() {
                     window.location.href = "{% url 'game' %}";
                 }, 3000);
             </script>
         {% endif %}
-
 
         <div class="mt-4">
             <p><strong>Correctas:</strong> {{ correct_count }}</p>
@@ -124,15 +122,14 @@
 
     <script>
         function endGame() {
-            const popup = document.getElementById('popup');
-            popup.style.display = 'block';
+            // Mostrar el pop-up
+            document.getElementById('popup').style.display = 'block';
 
-            // Hacer POST para reiniciar los contadores
-            fetch("{% url 'reset_counters' %}", { 
-                method: "POST", 
-                headers: { 'X-CSRFToken': '{{ csrf_token }}' } 
-            }).then(() => {
-                setTimeout(() => {
+            // Limpiar los contadores
+            fetch("{% url 'reset_counters' %}", { method: "POST", headers: { 'X-CSRFToken': '{{ csrf_token }}' } })
+            .then(() => {
+                // Redirigir a principal.html después de 5 segundos
+                setTimeout(function() {
                     window.location.href = "{% url 'principal' %}";
                 }, 3000);
             });
