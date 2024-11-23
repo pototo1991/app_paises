@@ -33,19 +33,24 @@ TRANSLATIONS = {
     "Melanesia": "Polinesia, Melanesia, Micronesia",
     "Micronesia": "Polinesia, Melanesia, Micronesia",
     "Central Asia": "Asia Central",
-    # abreviacion de modenas
-    "United States dollar": "dólar estadounidense",
-    "Moscow": "Moscú",
     # Idiomas
     "Spanish": "Español",
     "Japanese": "Japones",
+    "English": "Inglés",
+    "Hiri Motu": "Hiri Motu",
+    "Tok Pisin": "Tok Pisin",
+    "Dari Pashto": "Dari Pashto",
+    "Turkmen": "Turcomano",
     # Capitales
     "Moscow": "Moscú",
+    # Gentilicio
+    "Afghan": "Afgano",
     # Moneda
     "Argentine peso": "Peso Argentino",
     "Afghan afghani": "Afganí afgano",
     "Japanese yen": "Yen Japones",
     "Chilean peso": "Peso Chileno",
+    "United States dollar": "dólar estadounidense",
     # Fronteras
     "ABW": "Aruba",
     "AFG": "Afganistán",
