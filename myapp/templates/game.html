@@ -56,19 +56,6 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'principal' %}">Home</a>
-            <form class="d-flex mb-4" method="GET" action=".">
-                <input class="form-control me-2" type="search" placeholder="Buscar país" aria-label="Buscar" name="query" value="{{ query }}">
-                <select class="form-select me-2" name="region">
-                    <option value="" {% if not region %}selected{% endif %}>Todos los Continentes</option>
-                    <option value="Africa" {% if region == "Africa" %}selected{% endif %}>África</option>
-                    <option value="Americas" {% if region == "Americas" %}selected{% endif %}>Américas</option>
-                    <option value="Asia" {% if region == "Asia" %}selected{% endif %}>Asia</option>
-                    <option value="Europe" {% if region == "Europe" %}selected{% endif %}>Europa</option>
-                    <option value="Oceania" {% if region == "Oceania" %}selected{% endif %}>Oceanía</option>
-                </select>
-                <button class="btn btn-outline-success" type="submit">Filtrar</button>
-            </form>
-
         </div>
     </nav>
 
@@ -128,7 +115,7 @@
             // Limpiar los contadores
             fetch("{% url 'reset_counters' %}", { method: "POST", headers: { 'X-CSRFToken': '{{ csrf_token }}' } })
             .then(() => {
-                // Redirigir a principal.html después de 5 segundos
+                // Redirigir a principal.html después de 3 segundos
                 setTimeout(function() {
                     window.location.href = "{% url 'principal' %}";
                 }, 3000);
