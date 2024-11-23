@@ -115,11 +115,20 @@ def country_detail(request, country_name):
             return redirect("country_detail", country_name=country_name)
 
     if country_data:
+        # Valores predeterminados
+        DEFAULT_FLAG = (
+            "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
+        )
+        DEFAULT_COAT = (
+            "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
+        )
+
+        # Crear el objeto `country` con manejo de claves faltantes
         country = {
             "nombre": country_data["translations"]["spa"]["common"],
             "nombre_oficial": country_data["translations"]["spa"]["official"],
-            "bandera": country_data["flags"]["svg"],
-            "escudo": country_data["coatOfArms"]["svg"],
+            "bandera": country_data["flags"].get("svg", DEFAULT_FLAG),
+            "escudo": country_data.get("coatOfArms", {}).get("svg", DEFAULT_COAT),
             "capital": (
                 country_data["capital"][0] if country_data.get("capital") else "N/A"
             ),
@@ -129,7 +138,7 @@ def country_detail(request, country_name):
                 ",", "."
             ),
             "area": f"{int(country_data.get('area', 0)):,}".replace(",", ".") + " km²",
-            "latlng": country_data["latlng"],
+            "latlng": country_data.get("latlng", ["N/A", "N/A"]),
             "fronteras": (
                 ", ".join(
                     [translate(border) for border in country_data.get("borders", [])]
@@ -140,13 +149,13 @@ def country_detail(request, country_name):
             "monedas": (
                 [
                     translate(currency["name"])
-                    for currency in country_data["currencies"].values()
+                    for currency in country_data.get("currencies", {}).values()
                 ]
                 if country_data.get("currencies")
                 else ["Desconocida"]
             ),
             "idiomas": (
-                [translate(lang) for lang in country_data["languages"].values()]
+                [translate(lang) for lang in country_data.get("languages", {}).values()]
                 if country_data.get("languages")
                 else ["Desconocidos"]
             ),
@@ -160,12 +169,18 @@ def country_detail(request, country_name):
                 if country_data.get("continents")
                 else "Desconocido"
             ),
-            "tld": ", ".join(country_data["tld"]) if country_data.get("tld") else "N/A",
+            "tld": (
+                ", ".join(country_data.get("tld", []))
+                if country_data.get("tld")
+                else "N/A"
+            ),
             "independencia": "Sí" if country_data.get("independent") else "No",
-            "maps": country_data["maps"]["googleMaps"],
+            "maps": country_data["maps"].get("googleMaps", "N/A"),
             "fifa": country_data.get("fifa", "N/A"),
-            "zona_horaria": ", ".join(country_data["timezones"]),
-            "demonyms": f"{country_data['demonyms']['eng']['f']} / {country_data['demonyms']['eng']['m']}",
+            "zona_horaria": ", ".join(country_data.get("timezones", ["N/A"])),
+            "demonyms": country_data.get("demonyms", {}).get("eng", {}).get("f", "N/A")
+            + " / "
+            + country_data.get("demonyms", {}).get("eng", {}).get("m", "N/A"),
             "start_of_week": country_data.get("startOfWeek", "Desconocido"),
             "capital_info": country_data.get("capitalInfo", {"latlng": ["N/A", "N/A"]}),
             "codigo_postal": country_data.get(
@@ -181,10 +196,6 @@ def normalize(text):
     return "".join(
         c for c in unicodedata.normalize("NFD", text) if unicodedata.category(c) != "Mn"
     ).lower()
-
-
-import random
-import requests
 
 
 def game(request):
