@@ -47,7 +47,7 @@
             <form class="d-flex" method="GET" action=".">
                 <input class="form-control me-2" type="search" placeholder="Buscar país" aria-label="Buscar" name="query" value="{{ query }}">
                 <select class="form-select me-2" name="region">
-                    <option value="" {% if not region %}selected{% endif %}>Todas las Regiones</option>
+                    <option value="" {% if not region %}selected{% endif %}>Todos los Continentes</option>
                     <option value="Africa" {% if region == "Africa" %}selected{% endif %}>África</option>
                     <option value="Americas" {% if region == "Americas" %}selected{% endif %}>Américas</option>
                     <option value="Asia" {% if region == "Asia" %}selected{% endif %}>Asia</option>

@@ -183,13 +183,55 @@ def normalize(text):
     ).lower()
 
 
+import random
+import requests
+
+
 def game(request):
+    # Obtener datos de la API
     response = requests.get("https://restcountries.com/v3.1/all")
     countries = response.json()
+
+    # Inicializar contadores desde la sesión
     correct_count = request.session.get("correct_count", 0)
     incorrect_count = request.session.get("incorrect_count", 0)
     change_flag_count = request.session.get("change_flag_count", 0)
 
+    # Obtener los parámetros de filtro desde la solicitud
+    query = request.GET.get("query", "").strip().lower()
+    region = request.GET.get("region", "").strip()
+
+    # Filtrar países por región
+    if region:
+        countries = [
+            country
+            for country in countries
+            if country.get("region", "").lower() == region.lower()
+        ]
+
+    # Filtrar países por nombre si se ingresó un término de búsqueda
+    if query:
+        countries = [
+            country
+            for country in countries
+            if query in country["translations"]["spa"]["common"].lower()
+        ]
+
+    # Validar si hay países después del filtro
+    if not countries:
+        return render(
+            request,
+            "game.html",
+            {
+                "country": None,
+                "correct_count": correct_count,
+                "incorrect_count": incorrect_count,
+                "change_flag_count": change_flag_count,
+                "message": "No se encontraron países que coincidan con los criterios.",
+            },
+        )
+
+    # Procesar respuesta del usuario
     if request.method == "POST":
         user_answer = normalize(request.POST.get("answer").strip())
         correct_answer = normalize(request.POST.get("correct_answer").strip())
@@ -222,16 +264,19 @@ def game(request):
             },
         )
 
+    # Incrementar contador si se cambia de bandera
     elif request.method == "GET" and "change_flag" in request.GET:
         change_flag_count += 1
         request.session["change_flag_count"] = change_flag_count
 
+    # Seleccionar un país al azar después del filtrado
     random_country = random.choice(countries)
     country = {
         "nombre": translate(random_country["translations"]["spa"]["common"]),
         "bandera": random_country["flags"]["svg"],
     }
 
+    # Renderizar la página del juego
     return render(
         request,
         "game.html",
@@ -242,6 +287,8 @@ def game(request):
             "correct_count": correct_count,
             "incorrect_count": incorrect_count,
             "change_flag_count": change_flag_count,
+            "query": query,
+            "region": region,
         },
     )
 
